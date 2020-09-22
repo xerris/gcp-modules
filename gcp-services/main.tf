@@ -3,5 +3,4 @@ module "project-services" {
   version = "4.0.0"
   project_id                  = var.project
   activate_apis = var.apis
-  ]
 }
