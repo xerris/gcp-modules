@@ -25,3 +25,7 @@ variable "node_count" {
   type        = number
   default     = 1
 }
+
+variable "network_name"{
+  default = "vpc-andromeda"
+}

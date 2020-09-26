@@ -8,7 +8,7 @@ locals {
 }
 
 resource "google_compute_network" "vpc_network" {
-  name = "vpc-andromeda"
+  name = var.network_name
   description = "A network to secure a large GKE cluster"
   auto_create_subnetworks = false
   project  = var.project
@@ -48,7 +48,7 @@ resource "google_container_cluster" "primary" {
 
   network = google_compute_network.vpc_network.name
   subnetwork = google_compute_subnetwork.private.name
-  
+
   master_auth {
     username = ""
     password = ""
@@ -57,16 +57,13 @@ resource "google_container_cluster" "primary" {
       issue_client_certificate = false
     }
   }
-
-  # We can't create a cluster with no node pool defined, but we want to only use
-  # separately managed node pools. So we create the smallest possible default
-  # node pool and immediately delete it.
-  remove_default_node_pool = true
   initial_node_count       = 1
   node_locations = ["${var.location}-a"]
 
   node_config {
     service_account = google_service_account.gke_compute_service_account.email
+    machine_type = "e2-small"
+    preemptible  = true
   }
 }
 
@@ -92,4 +89,5 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
       "https://www.googleapis.com/auth/monitoring",
     ]
   }
+  depends_on = [google_container_cluster.primary]
 }
