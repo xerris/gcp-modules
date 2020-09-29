@@ -62,7 +62,7 @@ resource "google_container_cluster" "primary" {
 
   node_config {
     service_account = google_service_account.gke_compute_service_account.email
-    machine_type = "e2-small"
+    machine_type = var.machine_type
     preemptible  = true
   }
 }
