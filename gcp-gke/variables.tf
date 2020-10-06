@@ -29,3 +29,7 @@ variable "node_count" {
 variable "network_name"{
   default = "vpc-andromeda"
 }
+
+variable "version_gke"{
+  default = "1.16.13-gke.401"
+}

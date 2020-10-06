@@ -1,4 +1,4 @@
-resource "null_resource" "ambassador-service" {
+resource "null_resource" "ambassador-services" {
   provisioner "local-exec" {
     command = <<EOT
     kubectl create clusterrolebinding $CLUSTER_NAME-admin-binding --clusterrole=cluster-admin --user=$(gcloud info --format="value(config.account)")

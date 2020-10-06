@@ -45,7 +45,7 @@ resource "google_container_cluster" "primary" {
   name     = var.cluster_name
   project  = var.project
   location = var.location
-
+  min_master_version = var.version_gke
   network = google_compute_network.vpc_network.name
   subnetwork = google_compute_subnetwork.private.name
 
