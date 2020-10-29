@@ -7,6 +7,7 @@ resource "null_resource" "ambassador-services" {
     kubectl apply -f https://www.getambassador.io/yaml/ambassador/ambassador-crds.yaml
     kubectl apply -f https://www.getambassador.io/yaml/ambassador/ambassador-rbac.yaml
     kubectl apply -f ambassador-ingress.yaml
+    sleep 120s
     EOT
     environment = {
       CLUSTER_NAME =  var.cluster_name
