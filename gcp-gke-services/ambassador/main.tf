@@ -13,6 +13,11 @@ resource "null_resource" "ambassador-services" {
       REGION = var.location
     }
   }
+
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
 }
 
 variable "cluster_name"{}
