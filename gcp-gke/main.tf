@@ -42,6 +42,9 @@ resource "google_project_iam_member" "project_roles" {
 }
 
 data "google_compute_zones" "available" {
+  project  = var.project
+  region = var.location
+  status = "UP"
 }
 
 resource "google_container_cluster" "primary" {
