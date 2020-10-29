@@ -41,6 +41,9 @@ resource "google_project_iam_member" "project_roles" {
   member  = "serviceAccount:${google_service_account.gke_compute_service_account.email}"
 }
 
+data "google_compute_zones" "available" {
+}
+
 resource "google_container_cluster" "primary" {
   name     = var.cluster_name
   project  = var.project
@@ -58,7 +61,7 @@ resource "google_container_cluster" "primary" {
     }
   }
   initial_node_count       = 1
-  node_locations = ["${var.location}-a"]
+  node_locations = [data.google_compute_zones.available.names[0]]
 
   node_config {
     service_account = google_service_account.gke_compute_service_account.email
