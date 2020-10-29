@@ -15,14 +15,14 @@ resource "google_compute_network" "vpc_network" {
 }
 
 resource "google_compute_subnetwork" "private" {
-  name          = "sb-andromeda-prd"
-  ip_cidr_range = "10.1.0.0/16"
+  name          = var.subnet_name
+  ip_cidr_range =   var.cidr_range #"10.1.0.0/16"
   region        = var.location
   project  = var.project
   network       = google_compute_network.vpc_network.id
   secondary_ip_range {
-    range_name    = "tf-test-secondary-range-update1"
-    ip_cidr_range = "192.168.10.0/24"
+    range_name    = var.subnet_name_2
+    ip_cidr_range = var.cidr_range_2 #"192.168.10.0/24"
   }
 }
 

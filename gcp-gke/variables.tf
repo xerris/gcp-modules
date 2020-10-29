@@ -33,3 +33,19 @@ variable "network_name"{
 variable "version_gke"{
   default = "1.16.13-gke.401"
 }
+
+variable "cidr_range"{
+  default = "10.1.0.0/16"
+}
+
+variable "cidr_range_2"{
+  default = "192.168.10.0/24"
+}
+
+variable "subnet_name"{
+  default = "sb-andromeda-prd"
+}
+
+variable "subnet_name_2"{
+  default = "tf-test-secondary-range-update1"
+}
