@@ -11,7 +11,7 @@ data "google_compute_network" "my-network" {
 
 resource "google_sql_database_instance" "instance" {
   name   = var.db_name
-  region = "us-central1"
+  region = var.location
   database_version = "POSTGRES_11"
   project = var.project
   settings {

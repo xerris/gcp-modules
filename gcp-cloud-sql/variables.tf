@@ -11,3 +11,7 @@ variable "authorized_networks"{
 variable "network_name"{
     default = "vpc-andromeda"
 }
+
+variable "location"{
+    default = "us-central1"
+}

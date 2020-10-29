@@ -65,6 +65,12 @@ resource "google_container_cluster" "primary" {
     machine_type = var.machine_type
     preemptible  = true
   }
+
+ # private_cluster_config{
+ #   enable_private_nodes = true
+ #   enable_private_endpoint =  true
+ #   master_ipv4_cidr_block = "10.3.0.0/28"
+ # }
 }
 
 resource "google_container_node_pool" "primary_preemptible_nodes" {
