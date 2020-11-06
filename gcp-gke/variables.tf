@@ -57,11 +57,11 @@ variable "subnet_name_2"{
 }
 
 variable "enable_private_nodes"{
-  default = true
+  default = false
 }
 
 variable "enable_private_endpoint"{
-  default = true
+  default = false
 }
 
 variable "cidr_master_range"{
