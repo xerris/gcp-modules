@@ -54,6 +54,8 @@ resource "google_container_cluster" "primary" {
   min_master_version = var.version_gke
   network = google_compute_network.vpc_network.name
   subnetwork = google_compute_subnetwork.private.name
+  initial_node_count       = 1
+  node_locations = [data.google_compute_zones.available.names[0]]
 
   master_auth {
     username = ""
@@ -63,8 +65,6 @@ resource "google_container_cluster" "primary" {
       issue_client_certificate = false
     }
   }
-  initial_node_count       = 1
-  node_locations = [data.google_compute_zones.available.names[0]]
 
   node_config {
     service_account = google_service_account.gke_compute_service_account.email
@@ -72,11 +72,18 @@ resource "google_container_cluster" "primary" {
     preemptible  = true
   }
 
- # private_cluster_config{
- #   enable_private_nodes = true
- #   enable_private_endpoint =  true
- #   master_ipv4_cidr_block = "10.3.0.0/28"
- # }
+  private_cluster_config{
+    enable_private_nodes = var.enable_private_nodes
+    enable_private_endpoint =  false
+    master_ipv4_cidr_block = var.cidr_master_range
+  }
+
+  ip_allocation_policy {
+    cluster_secondary_range_name  = var.subnet_name_2
+    #services_secondary_range_name = "services"
+  }
+
+
 }
 
 resource "google_container_node_pool" "primary_preemptible_nodes" {
@@ -84,8 +91,15 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
   project    = var.project
   location   = var.location
   cluster    = google_container_cluster.primary.name
-  node_count = var.node_count
-
+  node_count = var.min_node_count
+  autoscaling{
+    min_node_count = var.min_node_count
+    max_node_count = var.max_node_count
+  }
+  management{
+    auto_repair = true
+    auto_upgrade = true
+  }
   node_config {
     preemptible  = true
     machine_type = var.machine_type

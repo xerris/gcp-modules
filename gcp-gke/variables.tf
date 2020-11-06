@@ -20,7 +20,13 @@ variable "location" {
   default     = "us-central1"
 }
 
-variable "node_count" {
+variable "min_node_count" {
+  description = "the number of nodes in your worker pool"
+  type        = number
+  default     = 1
+}
+
+variable "max_node_count" {
   description = "the number of nodes in your worker pool"
   type        = number
   default     = 1
@@ -48,4 +54,16 @@ variable "subnet_name"{
 
 variable "subnet_name_2"{
   default = "tf-test-secondary-range-update1"
+}
+
+variable "enable_private_nodes"{
+  default = true
+}
+
+variable "enable_private_endpoint"{
+  default = true
+}
+
+variable "cidr_master_range"{
+  default = "10.3.0.0/28"
 }

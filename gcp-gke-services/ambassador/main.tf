@@ -16,7 +16,7 @@ resource "null_resource" "ambassador-services" {
   }
 
   triggers = {
-    always_run = "${timestamp()}"
+    always_run = timestamp()
   }
 
 }
