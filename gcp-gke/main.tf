@@ -48,6 +48,7 @@ data "google_compute_zones" "available" {
 }
 
 resource "google_container_cluster" "primary" {
+  provider = google-beta
   name     = var.cluster_name
   project  = var.project
   location = var.location
@@ -75,7 +76,7 @@ resource "google_container_cluster" "primary" {
   private_cluster_config{
     enable_private_nodes = var.enable_private_nodes
     enable_private_endpoint =  false
-    master_ipv4_cidr_block = var.cidr_master_range
+   //  master_ipv4_cidr_block = var.cidr_master_range
   }
 
   ip_allocation_policy {
