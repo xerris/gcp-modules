@@ -32,38 +32,38 @@ variable "max_node_count" {
   default     = 1
 }
 
-variable "network_name"{
+variable "network_name" {
   default = "vpc-andromeda"
 }
 
-variable "version_gke"{
+variable "version_gke" {
   default = "1.16.13-gke.401"
 }
 
-variable "cidr_range"{
+variable "cidr_range" {
   default = "10.1.0.0/16"
 }
 
-variable "cidr_range_2"{
+variable "cidr_range_2" {
   default = "192.168.10.0/24"
 }
 
-variable "subnet_name"{
+variable "subnet_name" {
   default = "sb-andromeda-prd"
 }
 
-variable "subnet_name_2"{
+variable "subnet_name_2" {
   default = "tf-test-secondary-range-update1"
 }
 
-variable "enable_private_nodes"{
+variable "enable_private_nodes" {
   default = false
 }
 
-variable "enable_private_endpoint"{
+variable "enable_private_endpoint" {
   default = false
 }
 
-variable "cidr_master_range"{
+variable "cidr_master_range" {
   default = "10.3.0.0/28"
 }

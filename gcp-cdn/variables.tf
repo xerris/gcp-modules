@@ -1,11 +1,11 @@
-variable "domain_name"{}
-variable "project"{}
-variable "region"{}
-variable "bucket_name"{}
-variable "cdn_bucket_name"{}
-variable "cdn_url_map"{}
-variable "certificate_name"{}
-variable "public_address_name"{}
-variable "global_fw_rule"{}
-variable "managed_zone"{}
-variable "location"{}
+variable "domain_name" {}
+variable "project" {}
+variable "region" {}
+variable "bucket_name" {}
+variable "cdn_bucket_name" {}
+variable "cdn_url_map" {}
+variable "certificate_name" {}
+variable "public_address_name" {}
+variable "global_fw_rule" {}
+variable "managed_zone" {}
+variable "location" {}

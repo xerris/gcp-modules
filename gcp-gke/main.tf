@@ -1,24 +1,24 @@
 locals {
-    gke_compute_roles = [
-        "roles/logging.logWriter",
-        "roles/monitoring.metricWriter",
-       // "roles/stackdriver.resourceMetadata.write",
-        "roles/storage.objectViewer"
-    ]
+  gke_compute_roles = [
+    "roles/logging.logWriter",
+    "roles/monitoring.metricWriter",
+    // "roles/stackdriver.resourceMetadata.write",
+    "roles/storage.objectViewer"
+  ]
 }
 
 resource "google_compute_network" "vpc_network" {
-  name = var.network_name
-  description = "A network to secure a large GKE cluster"
+  name                    = var.network_name
+  description             = "A network to secure a large GKE cluster"
   auto_create_subnetworks = false
-  project  = var.project
+  project                 = var.project
 }
 
 resource "google_compute_subnetwork" "private" {
   name          = var.subnet_name
-  ip_cidr_range =   var.cidr_range #"10.1.0.0/16"
+  ip_cidr_range = var.cidr_range #"10.1.0.0/16"
   region        = var.location
-  project  = var.project
+  project       = var.project
   network       = google_compute_network.vpc_network.id
   secondary_ip_range {
     range_name    = var.subnet_name_2
@@ -29,7 +29,7 @@ resource "google_compute_subnetwork" "private" {
 # service account for nodes
 
 resource "google_service_account" "gke_compute_service_account" {
-  project = var.project
+  project      = var.project
   account_id   = "sa-${var.cluster_name}-compute"
   display_name = "${var.cluster_name} GKE Compute Service Account"
   description  = "provides access to basic compute for node pools"
@@ -42,21 +42,21 @@ resource "google_project_iam_member" "project_roles" {
 }
 
 data "google_compute_zones" "available" {
-  project  = var.project
-  region = var.location
-  status = "UP"
+  project = var.project
+  region  = var.location
+  status  = "UP"
 }
 
 resource "google_container_cluster" "primary" {
-  provider = google-beta
-  name     = var.cluster_name
-  project  = var.project
-  location = var.location
+  provider           = google-beta
+  name               = var.cluster_name
+  project            = var.project
+  location           = var.location
   min_master_version = var.version_gke
-  network = google_compute_network.vpc_network.name
-  subnetwork = google_compute_subnetwork.private.name
-  initial_node_count       = 1
-  node_locations = [data.google_compute_zones.available.names[0]]
+  network            = google_compute_network.vpc_network.name
+  subnetwork         = google_compute_subnetwork.private.name
+  initial_node_count = 1
+  node_locations     = [data.google_compute_zones.available.names[0]]
 
   master_auth {
     username = ""
@@ -69,18 +69,18 @@ resource "google_container_cluster" "primary" {
 
   node_config {
     service_account = google_service_account.gke_compute_service_account.email
-    machine_type = var.machine_type
-    preemptible  = true
+    machine_type    = var.machine_type
+    preemptible     = true
   }
 
-  private_cluster_config{
-    enable_private_nodes = var.enable_private_nodes
-    enable_private_endpoint =  false
-   //  master_ipv4_cidr_block = var.cidr_master_range
+  private_cluster_config {
+    enable_private_nodes    = var.enable_private_nodes
+    enable_private_endpoint = false
+    //  master_ipv4_cidr_block = var.cidr_master_range
   }
 
   ip_allocation_policy {
-    cluster_secondary_range_name  = var.subnet_name_2
+    cluster_secondary_range_name = var.subnet_name_2
     #services_secondary_range_name = "services"
   }
 
@@ -93,12 +93,12 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
   location   = var.location
   cluster    = google_container_cluster.primary.name
   node_count = var.min_node_count
-  autoscaling{
+  autoscaling {
     min_node_count = var.min_node_count
     max_node_count = var.max_node_count
   }
-  management{
-    auto_repair = true
+  management {
+    auto_repair  = true
     auto_upgrade = true
   }
   node_config {

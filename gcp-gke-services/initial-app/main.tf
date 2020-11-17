@@ -1,8 +1,8 @@
 resource "kubernetes_deployment" "deployment-app" {
   metadata {
-    name = var.name
+    name      = var.name
     namespace = var.namespace
-    labels = var.labels
+    labels    = var.labels
   }
 
   spec {
@@ -25,11 +25,11 @@ resource "kubernetes_deployment" "deployment-app" {
 
           resources {
             limits {
-              cpu    = var.cpu_limt #"0.5"
+              cpu    = var.cpu_limt     #"0.5"
               memory = var.memory_limit #"512Mi"
             }
             requests {
-              cpu    = var.cpu_request #"250m"
+              cpu    = var.cpu_request    #"250m"
               memory = var.memoru_request #"50Mi"
             }
           }

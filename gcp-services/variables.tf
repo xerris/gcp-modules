@@ -3,7 +3,7 @@ variable "project" {
   type        = string
 }
 
-variable "apis"{
-    description = "API list to activate"
-    type    = list(string)
+variable "apis" {
+  description = "API list to activate"
+  type        = list(string)
 }

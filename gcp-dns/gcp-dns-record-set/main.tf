@@ -3,6 +3,6 @@ resource "google_dns_record_set" "record_set" {
   managed_zone = var.dns_zone_name
   type         = var.type
   ttl          = 300
-  project     = var.project
-  rrdatas = var.record_data
+  project      = var.project
+  rrdatas      = var.record_data
 }

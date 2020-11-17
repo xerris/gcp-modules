@@ -1,15 +1,15 @@
 provider "google" {
   #credentials = file("~/.config/gcloud/terraform.json")
-  version     = "3.5.0"
-  region      = var.region
-  project     = var.project
+  version = "3.5.0"
+  region  = var.region
+  project = var.project
 }
 
 provider "google-beta" {
   #credentials = file("~/.config/gcloud/terraform.json")
-  version     = "3.5.0"
-  region      = var.region
-  project     = var.project
+  version = "3.5.0"
+  region  = var.region
+  project = var.project
 }
 
 # ------------------------------------------------------------------------------

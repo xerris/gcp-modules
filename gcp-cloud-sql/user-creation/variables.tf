@@ -1,3 +1,3 @@
-variable "user_name"{}
-variable "db_name"{}
-variable "project"{}
+variable "user_name" {}
+variable "db_name" {}
+variable "project" {}
