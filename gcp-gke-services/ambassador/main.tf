@@ -7,7 +7,7 @@ resource "null_resource" "ambassador-services" {
     kubectl apply -f https://www.getambassador.io/yaml/ambassador/ambassador-crds.yaml
     kubectl apply -f https://www.getambassador.io/yaml/ambassador/ambassador-rbac.yaml
     kubectl apply -f ambassador-ingress.yaml
-    kubectl create secret docker-registry gcr-json-key --docker-server=us.gcr.io --docker-username=_json_key --docker-password="$(cat secrets/gke-sbx-sa.json)" --docker-email=sa-sizing-poker-sbx-compute@sizing.iam.gserviceaccount.com
+    kubectl create secret docker-registry gcr-json-key --docker-server=us.gcr.io --docker-username=_json_key --docker-password="$(cat ../../secrets/gke-sbx-sa.json)" --docker-email=sa-sizing-poker-sbx-compute@sizing.iam.gserviceaccount.com
     sleep 240s
     EOT
     environment = {
