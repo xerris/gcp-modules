@@ -37,7 +37,7 @@ variable "network_name" {
 }
 
 variable "version_gke" {
-  default = "1.16.13-gke.401"
+  default = "1.17.14-gke.400"
 }
 
 variable "cidr_range" {
