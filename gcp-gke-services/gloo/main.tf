@@ -4,12 +4,10 @@ resource "null_resource" "gloo-services" {
     gcloud container clusters get-credentials $CLUSTER_NAME --region $REGION
     kubectl cluster-info
     kubectl create clusterrolebinding $CLUSTER_NAME-admin-binding --clusterrole=cluster-admin --user=$(gcloud info --format="value(config.account)")
-    helm init
-    helm repo add gloo https://storage.googleapis.com/solo-public-helm
-    helm repo update
-    kubectl create namespace gloo-system
-    helm install gloo gloo/gloo --namespace gloo-system \
-      --set gateway.enabled=false,ingress.enabled=true
+    curl -sL https://run.solo.io/gloo/install | sh
+    export PATH=$HOME/.gloo/bin:$PATH
+    glooctl version
+    glooctl install ingress
     kubectl create secret docker-registry gcr-json-key --docker-server=us.gcr.io --docker-username=_json_key --docker-password="$(cat ../../secrets/$SECRET_FILE)" --docker-email=$SERVICE_ACCOUNT
     sleep 240s
     EOT
