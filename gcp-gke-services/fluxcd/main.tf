@@ -15,7 +15,6 @@ terraform {
 data "flux_install" "main" {
   target_path    = var.target_path
   network_policy = false
-  version        = "latest"
 }
 
 resource "kubernetes_namespace" "flux_system" {
