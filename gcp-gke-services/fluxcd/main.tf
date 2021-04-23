@@ -2,7 +2,7 @@ terraform {
   required_providers {
     flux = {
       source  = "fluxcd/flux"
-      version = "0.0.2"
+      version = "0.1.3"
     }
     kubectl = {
       source  = "gavinbunney/kubectl"
@@ -15,7 +15,6 @@ terraform {
 data "flux_install" "main" {
   target_path    = var.target_path
   network_policy = false
-  version = "v0.9.1"
 }
 
 resource "kubernetes_namespace" "flux_system" {
