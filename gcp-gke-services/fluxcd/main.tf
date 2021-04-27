@@ -28,6 +28,14 @@ resource "kubernetes_namespace" "flux_system" {
 data "kubectl_file_documents" "apply" {
   content = data.flux_install.main.content
 }
+locals {
+  apply = [ for v in data.kubectl_file_documents.apply.documents : {
+      data: yamldecode(v)
+      content: v
+    }
+  ]
+}
+
 output "kubectl_apply" {
   value = { content = data.kubectl_file_documents.apply
   }
@@ -36,10 +44,15 @@ output "kubectl_apply" {
 
 # Apply manifests on the cluster
 resource "kubectl_manifest" "apply" {
-  count     = 20
+  for_each   = { for v in local.apply : lower(join("/", compact([v.data.apiVersion, v.data.kind, lookup(v.data.metadata, "namespace", ""), v.data.metadata.name]))) => v.content }
   depends_on = [kubernetes_namespace.flux_system]
-  yaml_body = element(data.kubectl_file_documents.apply.documents, count.index)
+  yaml_body = each.value
 }
+#resource "kubectl_manifest" "apply" {
+#  count     = 20
+#  depends_on = [kubernetes_namespace.flux_system]
+#  yaml_body = element(data.kubectl_file_documents.apply.documents, count.index)
+#}
 
 ####################################################
 ####################################################
@@ -57,12 +70,26 @@ data "kubectl_file_documents" "sync" {
   content = data.flux_sync.main.content
 }
 
-# Apply manifests on the cluster
-resource "kubectl_manifest" "sync" {
-  count = 20
-  depends_on = [kubectl_manifest.apply, kubernetes_namespace.flux_system]
-  yaml_body = element(data.kubectl_file_documents.sync.documents, count.index)
+locals {
+  sync = [ for v in data.kubectl_file_documents.sync.documents : {
+      data: yamldecode(v)
+      content: v
+    }
+  ]
 }
+
+# Apply manifests on the cluster
+
+resource "kubectl_manifest" "sync" {
+  for_each   = { for v in local.sync : lower(join("/", compact([v.data.apiVersion, v.data.kind, lookup(v.data.metadata, "namespace", ""), v.data.metadata.name]))) => v.content }
+  depends_on = [kubernetes_namespace.flux_system]
+  yaml_body = each.value
+}
+#resource "kubectl_manifest" "sync" {
+#  count = 20
+#  depends_on = [kubectl_manifest.apply, kubernetes_namespace.flux_system]
+#  yaml_body = element(data.kubectl_file_documents.sync.documents, count.index)
+#}
 
 output "kubectl_sync" {
   value = { content = data.kubectl_file_documents.sync
