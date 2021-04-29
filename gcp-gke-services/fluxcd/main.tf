@@ -17,11 +17,11 @@ data "flux_install" "main" {
   network_policy = false
 }
 
-#resource "kubernetes_namespace" "flux_system" {
-#  metadata {
-#    name = "flux-system"
-#  }
-#}
+resource "kubernetes_namespace" "flux_system" {
+  metadata {
+    name = "flux-system"
+  }
+}
 
 # Split multi-doc YAML with
 # https://registry.terraform.io/providers/gavinbunney/kubectl/latest
@@ -45,7 +45,7 @@ output "kubectl_apply" {
 # Apply manifests on the cluster
 resource "kubectl_manifest" "apply" {
   for_each   = { for v in local.apply : lower(join("/", compact([v.data.apiVersion, v.data.kind, lookup(v.data.metadata, "namespace", ""), v.data.metadata.name]))) => v.content }
-  #depends_on = [kubernetes_namespace.flux_system]
+  depends_on = [kubernetes_namespace.flux_system]
   yaml_body = each.value
 }
 
@@ -77,7 +77,7 @@ locals {
 
 resource "kubectl_manifest" "sync" {
   for_each   = { for v in local.sync : lower(join("/", compact([v.data.apiVersion, v.data.kind, lookup(v.data.metadata, "namespace", ""), v.data.metadata.name]))) => v.content }
-  #depends_on = [kubernetes_namespace.flux_system]
+  depends_on = [kubernetes_namespace.flux_system]
   yaml_body = each.value
 }
 
